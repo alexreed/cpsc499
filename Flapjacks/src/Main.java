@@ -1,30 +1,21 @@
+/**
+ * Created with IntelliJ IDEA.
+ * User: curtis
+ * Date: 2013-01-22
+ * Time: 1:35 PM
+ * To change this template use File | Settings | File Templates.
+ */
+
+
 /*
  * Main.java
  *  java program model for www.programming-challenges.com
  */
 
-import java.io.*;
 import java.util.*;
 
 class Main implements Runnable{
-    static String ReadLn(int maxLength){  // utility function to read from stdin,
-        // Provided by Programming-challenges, edit for style only
-        byte line[] = new byte [maxLength];
-        int length = 0;
-        int input = -1;
-        try{
-            while (length < maxLength){//Read until maxlength
-                input = System.in.read();
-                if ((input < 0) || (input == '\n')) break; //or untill end of line ninput
-                line [length++] += input;
-            }
 
-            if ((input < 0) && (length == 0)) return null;  // eof
-            return new String(line, 0, length);
-        }catch (IOException e){
-            return null;
-        }
-    }
 
     public static void main(String args[])  // entry point from OS
     {
@@ -39,30 +30,34 @@ class Main implements Runnable{
 class myStuff implements Runnable{
 
     private ArrayList<Integer> stack = new ArrayList();
+    private ArrayList<Integer> flipLocations = new ArrayList();
+    String OrigLine = null;
 
     public void run()
     {
-        while(true)
+
+        Scanner scan = new Scanner(System.in);
+
+        while(scan.hasNextLine())
         {
-            String input = Main.ReadLn(100000);
 
-            if(input.isEmpty())
-                break;
+            OrigLine  = scan.nextLine();
 
-            Scanner scanner = new Scanner(input);
+            Scanner line = new Scanner(OrigLine);
 
-            while(scanner.hasNextInt())
+            while(line.hasNextInt())
             {
-                int flapjack = scanner.nextInt();
 
-                stack.add(0,flapjack);
+                stack.add(0,line.nextInt());
 
-                System.out.print(flapjack + " ");
             }
 
-            System.out.println();
             perfectStack();
+
         }
+
+
+
     }
 
     private void perfectStack()
@@ -77,14 +72,14 @@ class myStuff implements Runnable{
                 {
                     if(greatestPointer == -1)
                     {
-                         greatestPointer = greaterThanPointer;
+                        greatestPointer = greaterThanPointer;
                     }
                     else
                     {
-                          if(stack.get(greaterThanPointer) > stack.get(greatestPointer))
-                          {
-                              greatestPointer = greaterThanPointer;
-                          }
+                        if(stack.get(greaterThanPointer) > stack.get(greatestPointer))
+                        {
+                            greatestPointer = greaterThanPointer;
+                        }
                     }
 
                 }
@@ -94,23 +89,47 @@ class myStuff implements Runnable{
             {
                 flip(flipPointer+1);
 
-                System.out.print(flipPointer+1 + " ");
+                flipLocations.add(flipPointer+1);
             }
             else if(greatestPointer != -1) //require two flip
             {
                 flip(greatestPointer+1);
 
-                System.out.print(greatestPointer+1 + " ");
+                flipLocations.add(greatestPointer+1);
 
                 flip(flipPointer+1);
 
-                System.out.print(flipPointer+1 + " ");
+                flipLocations.add(flipPointer+1);
             }
         }
 
-        stack.clear();
+        System.out.println(OrigLine);
+        printFlipList(flipLocations);
 
-        System.out.println(0);
+        flipLocations.clear();
+        stack.clear();
+        OrigLine = null;
+
+    }
+
+    private void printFlipList(ArrayList<Integer> list)
+    {
+
+        StringBuilder string = new StringBuilder();
+
+        for(Integer listIndex : list)
+        {
+
+            string.append(listIndex);
+            string.append(" ");
+
+
+        }
+
+        string.append(0);
+
+        System.out.println(string);
+
     }
 
     private void flip(int positionInStack)
@@ -125,12 +144,10 @@ class myStuff implements Runnable{
 
         for(int positionInMiniStack = 0; positionInMiniStack < miniStack.size(); positionInMiniStack++)
         {
-             stack.set(positionInStack, miniStack.get(positionInMiniStack));
+            stack.set(positionInStack, miniStack.get(positionInMiniStack));
 
             positionInStack++;
         }
 
-        //System.out.println(stack.toString());
     }
-    // You can insert more classes here if you want.
 }
