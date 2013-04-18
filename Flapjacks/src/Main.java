@@ -1,11 +1,10 @@
 /**
  * Created with IntelliJ IDEA.
- * User: curtis
+ * User: Curtis Oage
  * Date: 2013-01-22
  * Time: 1:35 PM
  * To change this template use File | Settings | File Templates.
  */
-
 
 /*
  * Main.java
@@ -40,7 +39,6 @@ class myStuff implements Runnable{
 
         while(scan.hasNextLine())
         {
-
             OrigLine  = scan.nextLine();
 
             Scanner line = new Scanner(OrigLine);
@@ -53,11 +51,7 @@ class myStuff implements Runnable{
             }
 
             perfectStack();
-
         }
-
-
-
     }
 
     private void perfectStack()
@@ -114,32 +108,25 @@ class myStuff implements Runnable{
 
     private void printFlipList(ArrayList<Integer> list)
     {
-
         StringBuilder string = new StringBuilder();
 
         for(Integer listIndex : list)
         {
-
             string.append(listIndex);
             string.append(" ");
-
-
         }
 
         string.append(0);
 
         System.out.println(string);
-
     }
 
     private void flip(int positionInStack)
     {
         positionInStack = positionInStack-1;
 
-        //2 5 7 6 4 8
         List<Integer> miniStack = stack.subList(positionInStack,stack.size());
 
-        //7 6 4 8
         Collections.reverse(miniStack);
 
         for(int positionInMiniStack = 0; positionInMiniStack < miniStack.size(); positionInMiniStack++)
